@@ -7,7 +7,7 @@ import CalendarEvent from './CalendarEvent';
 import CalendarModal  from './CalendarModal';
 
 import moment from 'moment';
-import { messages } from '../helpers/calendar-messages-pt';
+import { messages } from '../../helpers/calendar-messages-pt';
 
 import 'moment/locale/pt-br';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
