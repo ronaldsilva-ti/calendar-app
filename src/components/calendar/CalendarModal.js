@@ -34,7 +34,7 @@ export default function CalendarModal(){
 
     const [ startDate, setStartDate ] = useState( now.toDate() );
     const [ endDate, seEndDate ] = useState( nowPlus1.toDate() );
-    const [ titleValid,setTitleValid] = useState( true );
+    const [ titleValid,setTitleValid ]  = useState( true );
 
     const [ formValues, setFormValues ] = useState({
         title: 'Evento',

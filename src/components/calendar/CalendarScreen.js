@@ -6,6 +6,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import Navbar from '../ui/Navbar';
 import CalendarEvent from './CalendarEvent';
 import CalendarModal  from './CalendarModal';
+import AddNewFab from '../ui/AddNewFab'
 
 import moment from 'moment';
 import { messages } from '../../helpers/calendar-messages-pt';
@@ -14,6 +15,7 @@ import 'moment/locale/pt-br';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { uiOpenModal } from '../../actions/ui';
+import { eventSetActive } from '../../actions/event';
 
 
 moment.locale('pt-br');
@@ -45,7 +47,7 @@ export default function CalendarScreen(){
    }
 
    const onSelectedEvent = e => {
-      console.log(e)
+     dispatch( eventSetActive ( e ) )
    }
 
    const OnviewChange = e =>{
@@ -88,7 +90,9 @@ export default function CalendarScreen(){
             }}
          />
 
-         
+            
+         <AddNewFab />   
+
          <CalendarModal />                            
        </div>
     )
