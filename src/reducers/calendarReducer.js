@@ -1,15 +1,15 @@
-import moment  from 'moment';
+// import moment  from 'moment';
 import { types } from '../types/types';
 
 const { EVENT_ADD_NEW, EVENT_SET_ACTIVE } = types
 
 const INITIAL_STATE = {
     events:[{        
-        title:'Cumprir tarefa',
-        start: moment().toDate(),
-        end: moment().add( 2,'hours' ).toDate(),
+        title:'',
+        start: null,
+        end: null,
         bgcolor: '#fafafa',
-        notes: 'Comprar pastel',
+        notes: '',
         user:{
             id: '123',
             name: 'Ronald Silva'
@@ -20,8 +20,10 @@ const INITIAL_STATE = {
 
 export const calendarReducer = ( state = INITIAL_STATE, action ) => {
     switch (action.type) { 
-        case EVENT_SET_ACTIVE:
+        case EVENT_SET_ACTIVE :
             return { ...state, activeEvent: action.payload }     
+        case  EVENT_ADD_NEW :
+            return { ...state, events: [ ...state.events, action.payload ] }
         default:
             return { ...state }
     }

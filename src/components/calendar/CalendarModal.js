@@ -7,6 +7,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { uiCloseModal } from '../../actions/ui';
+import { eventAddNew } from '../../actions/event';
 
 
 
@@ -27,6 +28,12 @@ const customStyles = {
   const now = moment().minutes(0).seconds(0).add(1,'hours');
   const nowPlus1 = now.clone().add(1, 'hours')
 
+  const INITIAL_EVENT = {
+    title: '',
+    notes:'',
+    start: now.toDate(),
+    end: nowPlus1.toDate()
+}
 export default function CalendarModal(){
 
     const { modalOpen } = useSelector( state => state.ui );
@@ -36,17 +43,13 @@ export default function CalendarModal(){
     const [ endDate, seEndDate ] = useState( nowPlus1.toDate() );
     const [ titleValid,setTitleValid ]  = useState( true );
 
-    const [ formValues, setFormValues ] = useState({
-        title: 'Evento',
-        notes:'',
-        start: now.toDate(),
-        end: nowPlus1.toDate()
-    })
+    const [ formValues, setFormValues ] = useState(INITIAL_EVENT)
 
     const { notes, title, start, end } = formValues;
 
     const closeModal = () => {    
         dispatch(  uiCloseModal() )
+        setFormValues(INITIAL_EVENT)
         console.log('Close Modal')
     }
 
@@ -91,6 +94,17 @@ export default function CalendarModal(){
         if( title.trim().length < 2 ){
             return setTitleValid( false )
         }
+
+        console.log( formValues )
+
+        dispatch( eventAddNew({
+            ...formValues,
+            id: new Date().getTime(),
+            user:{
+                _id:'123',
+                name: 'Ronald Silva'
+            }
+        }) )
 
         closeModal()
         setTitleValid( true )
