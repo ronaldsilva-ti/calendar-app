@@ -5,7 +5,8 @@ const {
     EVENT_ADD_NEW,
     EVENT_SET_ACTIVE,
     EVENT_CLEAR_ACTIVE_EVENT,
-    EVENT_UPDATED
+    EVENT_UPDATED,
+    EVENT_DELETED
 } = types;
 
 const INITIAL_STATE = {
@@ -36,6 +37,12 @@ export const calendarReducer = ( state = INITIAL_STATE, action ) => {
             return { ...state, events:  state.events.map(
                 event => ( event.id === action.payload.id ) ? action.payload : event
             )}
+        case EVENT_DELETED : 
+            return { ...state, events:  state.events.filter(
+                event => ( event.id !== state.activeEvent.id )
+            ),
+            activeEvent: null
+        }
         default:
             return { ...state }
     }

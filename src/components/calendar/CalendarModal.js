@@ -61,8 +61,9 @@ export default function CalendarModal(){
     useEffect( () => {
         if( activeEvent ){
             setFormValues( activeEvent )
-        }
-        
+        }else{
+            setFormValues( INITIAL_EVENT )
+        }      
 
     },[ activeEvent, setFormValues ])
 
@@ -126,7 +127,7 @@ export default function CalendarModal(){
                     name: 'Ronald Silva'
                 }
             }) )
-            
+
         }
 
       
@@ -145,7 +146,7 @@ export default function CalendarModal(){
         overlayClassName="modal-fondo"
         >
 
-        <h1>Novo Evento</h1>
+        <h1>{ (activeEvent)? 'Editar Evento' : 'Novo Evento' }</h1>
         <hr />
         <form
           onSubmit={ handleInputSubmit }

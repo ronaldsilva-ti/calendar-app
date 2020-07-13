@@ -7,6 +7,7 @@ import Navbar from '../ui/Navbar';
 import CalendarEvent from './CalendarEvent';
 import CalendarModal  from './CalendarModal';
 import AddNewFab from '../ui/AddNewFab';
+import DeleteEventFab from '../ui/DeleteEventFab';
 
 import moment from 'moment';
 import { messages } from '../../helpers/calendar-messages-pt';
@@ -15,7 +16,7 @@ import 'moment/locale/pt-br';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import { uiOpenModal } from '../../actions/ui';
-import { eventSetActive } from '../../actions/event';
+import { eventSetActive, eventClearActiveEvent } from '../../actions/event';
 
 
 moment.locale('pt-br');
@@ -26,7 +27,7 @@ const localizer = momentLocalizer( moment );
 
 
 export default function CalendarScreen(){
-   const { events } = useSelector(state => state.calendar)
+   const { events, activeEvent } = useSelector(state => state.calendar)
    // console.log(events)
    
    const dispatch = useDispatch()
@@ -37,6 +38,11 @@ export default function CalendarScreen(){
       dispatch( uiOpenModal()  )
       // console.log('Abrir Modal');
       
+   }
+
+   const onSelectSlot = ( e ) =>{
+      // console.log(e)
+      dispatch( eventClearActiveEvent() )
    }
 
    const onSelectedEvent = e => {
@@ -74,6 +80,8 @@ export default function CalendarScreen(){
             endAccessor="end"
             messages={ messages }           
             eventPropGetter={ eventStyleGetter }
+            onSelectSlot={ onSelectSlot }
+            selectable={ true }
             onDoubleClickEvent={ onDoubleClick }
             onSelectEvent={ onSelectedEvent }
             onView={ OnviewChange }
@@ -85,6 +93,9 @@ export default function CalendarScreen(){
 
             
          <AddNewFab />   
+
+         { (activeEvent) && <DeleteEventFab /> }
+         
 
          <CalendarModal />                            
        </div>
