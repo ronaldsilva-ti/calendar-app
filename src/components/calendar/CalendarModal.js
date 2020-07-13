@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Modal from 'react-modal';
@@ -7,7 +7,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 
 import { uiCloseModal } from '../../actions/ui';
-import { eventAddNew } from '../../actions/event';
+import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/event';
 
 
 
@@ -36,22 +36,37 @@ const customStyles = {
 }
 export default function CalendarModal(){
 
-    const { modalOpen } = useSelector( state => state.ui );
     const dispatch = useDispatch();
+    const { modalOpen } = useSelector( state => state.ui );
+    const { activeEvent } = useSelector( state => state.calendar );
+
+
 
     const [ startDate, setStartDate ] = useState( now.toDate() );
     const [ endDate, seEndDate ] = useState( nowPlus1.toDate() );
     const [ titleValid,setTitleValid ]  = useState( true );
 
-    const [ formValues, setFormValues ] = useState(INITIAL_EVENT)
+    const [ formValues, setFormValues ] = useState( INITIAL_EVENT )
 
     const { notes, title, start, end } = formValues;
 
     const closeModal = () => {    
-        dispatch(  uiCloseModal() )
-        setFormValues(INITIAL_EVENT)
-        console.log('Close Modal')
+
+        dispatch(  uiCloseModal() )    
+        dispatch( eventClearActiveEvent() )    
+        setFormValues( INITIAL_EVENT )
+        
     }
+
+    useEffect( () => {
+        if( activeEvent ){
+            setFormValues( activeEvent )
+        }
+        
+
+    },[ activeEvent, setFormValues ])
+
+
 
     const handleInputChange = ({ target }) => {
         
@@ -97,14 +112,24 @@ export default function CalendarModal(){
 
         console.log( formValues )
 
-        dispatch( eventAddNew({
-            ...formValues,
-            id: new Date().getTime(),
-            user:{
-                _id:'123',
-                name: 'Ronald Silva'
-            }
-        }) )
+        if( activeEvent ){
+            
+            dispatch( eventUpdated( formValues ) )
+
+        }else{
+
+            dispatch( eventAddNew({
+                ...formValues,
+                id: new Date().getTime(),
+                user:{
+                    _id:'123',
+                    name: 'Ronald Silva'
+                }
+            }) )
+            
+        }
+
+      
 
         closeModal()
         setTitleValid( true )
@@ -112,7 +137,7 @@ export default function CalendarModal(){
 
     return(
         <Modal
-        isOpen={ modalOpen}
+        isOpen={ modalOpen }
         onRequestClose={ closeModal }
         style={ customStyles }
         closeTimeoutMS={ 200 }

@@ -6,7 +6,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import Navbar from '../ui/Navbar';
 import CalendarEvent from './CalendarEvent';
 import CalendarModal  from './CalendarModal';
-import AddNewFab from '../ui/AddNewFab'
+import AddNewFab from '../ui/AddNewFab';
 
 import moment from 'moment';
 import { messages } from '../../helpers/calendar-messages-pt';
@@ -36,11 +36,11 @@ export default function CalendarScreen(){
    const onDoubleClick = () => {
       dispatch( uiOpenModal()  )
       // console.log('Abrir Modal');
+      
    }
 
    const onSelectedEvent = e => {
      dispatch( eventSetActive ( e ) )
-     dispatch( uiOpenModal() )
    }
 
    const OnviewChange = e =>{
